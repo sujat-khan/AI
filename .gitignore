@@ -1,6 +1,7 @@
 test_header.py
 AI.docx
 AI_backup.docx
+AI_2.docx
 cover.docx
 .env
 .venv/
@@ -17,3 +18,5 @@ Huggingface/5_Dataset_Library/drug-reviews/
 Huggingface/5_Dataset_Library/datasets-issues.jsonl
 
 archived/
+ai_engineer_assessment_roadmap.md
+AI_roadmap.md
