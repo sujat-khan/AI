@@ -124,14 +124,7 @@ Structured walkthrough of core LLM concepts with interactive notebooks:
 
 ---
 
-## 🗃️ Archived (`archived/`)
 
-Older ML/DL notebooks from earlier coursework, kept for reference:
-- `HealthData Decision Tree classifier.ipynb`
-- `Logistic_Regression_with_a_Neural_Network_mindset_v6a.ipynb`
-- `Assignment 2 FinalWork -version T2.ipynb`
-
----
 
 ## 🛠️ Technology Stack
 
