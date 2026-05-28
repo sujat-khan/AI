@@ -1,90 +1,230 @@
 # AI, LLM & RAG Exploration Repository
 
-This repository is a comprehensive collection of Jupyter Notebooks dedicated to learning, experimenting, and implementing modern AI techniques. It covers everything from the fundamentals of Large Language Models (LLMs) and Hugging Face infrastructure, to advanced **Retrieval-Augmented Generation (RAG)** techniques, Agentic workflows, and Parameter-Efficient Fine-Tuning (PEFT). 
+A comprehensive collection of Jupyter Notebooks dedicated to learning, experimenting, and implementing modern AI techniques — from LLM fundamentals to advanced Retrieval-Augmented Generation, Agentic workflows, Fine-Tuning, and LangChain mastery.
 
-The primary dataset used across the RAG experiments is the seminal paper *"Attention Is All You Need"* (`NIPS-2017-attention-is-all-you-need-Paper.pdf`).
-
-## 📂 Repository Contents
-
-### 🧠 RAG & Vector Search
-#### 1. `embedding.ipynb`
-An exploration into **text embeddings**. This notebook demonstrates how to convert text into high-dimensional vector representations using embedding models. Understanding this is a crucial prerequisite for standard Vector RAG.
-
-#### 2. `RAG.ipynb` & `RAG_pdf.ipynb` (Traditional Vector RAG)
-A complete pipeline implementing traditional **Vector-based RAG** over text and PDF documents.
-- **Workflow:** Loads the PDF → Chunks the text → Generates embeddings → Stores them in a vector database (`ChromaDB`) → Retrieves semantically similar chunks → Generates answers using local LLMs.
-- **Strengths:** Excellent for broad, semantic search and similarity matching.
-
-#### 3. `Hybrid_Search_RAG.ipynb` (Hybrid Search RAG)
-Explores combining traditional keyword-based search with semantic vector search to improve retrieval accuracy. 
-
-#### 4. `Graph_RAG.ipynb` (Vector-less Graph RAG)
-An alternative approach to RAG that abandons embeddings in favor of a **Knowledge Graph**.
-- **Workflow:** Uses the LLM to extract explicit facts as `(Subject, Relation, Object)` triplets → Builds a directed graph using `networkx` → Finds exact node matches in the graph → Retrieves the 1-hop subgraph.
-- **Strengths:** High precision, 100% explainability, and excellent at multi-hop reasoning.
+> 📄 The primary dataset used across RAG experiments is the seminal paper *"Attention Is All You Need"* ([`NIPS-2017-attention-is-all-you-need-Paper.pdf`](NIPS-2017-attention-is-all-you-need-Paper.pdf)).
 
 ---
 
-### 🤖 Agents & Advanced RAG
-#### 5. `Function_Calling.ipynb`
-A foundation for Agentic workflows. Demonstrates how to give an LLM access to external Python functions (tools), allowing it to take actions rather than just generating text.
+## 📂 Repository Structure
 
-#### 6. `ReAct_Agent.ipynb`
-Builds an AI Agent from scratch using the **ReAct (Reason + Act)** pattern. Uses a `while` loop to let an LLM think, execute a tool, observe the result, and decide when to output a final answer.
-
-#### 7. `Agentic_RAG_Tutorial.ipynb`
-Introduces Agentic RAG routing using **LangGraph** and **LlamaIndex Workflows**. The LLM acts as a router, deciding whether a query requires searching a vector database or performing a web search.
-
-#### 8. `Self_RAG.ipynb` (Self-Reflective RAG)
-Implements an advanced pipeline using **LangGraph**. It adds a "Grader" step that evaluates whether retrieved documents actually answer the question, and automatically rewrites the search query if the retrieval was poor.
-
----
-
-### 🏋️ Fine-Tuning & Evaluation
-#### 9. `LoRA_PEFT_Tutorial.ipynb`
-A tutorial demonstrating **Parameter-Efficient Fine-Tuning (PEFT)** using the **LoRA (Low-Rank Adaptation)** technique. We fine-tune an LLM to adopt a "sarcastic pirate" persona using the `SFTTrainer` and QLoRA for memory-efficient training. Output artifacts are stored in `lora_pirate_model/` and `pirate_lora_adapter/`.
-
-#### 10. `RAGAS_Tutorial.ipynb`
-A guide to evaluating RAG pipelines using the **RAGAS** framework. Demonstrates how to programmatically assess retrieval accuracy, generation quality, and answer relevance using the Gemini API.
+```
+AI/
+├── 📓 RAG & Vector Search Notebooks
+├── 📓 Agents & Advanced RAG Notebooks
+├── 📓 Fine-Tuning & Evaluation Notebooks
+├── 📁 LangChain/          ← Full LangChain course (13 notebooks)
+├── 📁 Huggingface/        ← HuggingFace NLP Course (6 modules)
+├── 📁 Hands-On-Large-Language-Models/  ← LLM internals (5 chapters)
+├── 📁 lora_pirate_model/  ← LoRA fine-tune output
+├── 📁 pirate_lora_adapter/ ← LoRA adapter weights
+└── 📁 archived/           ← Older ML/DL notebooks
+```
 
 ---
 
-### 📚 Fundamentals & Courses
-#### 11. `Hands-On-Large-Language-Models/`
-A structured walkthrough of core LLM concepts. Contains interactive notebooks covering:
-- Chapter 1: Introduction to Language Models
-- Chapter 2: Tokens and Token Embeddings
-- Chapter 3: Looking Inside LLMs
-- Chapter 4: Text Classification
-- Chapter 5: Text Clustering and Topic Modeling
+## 🧠 RAG & Vector Search
 
-#### 12. `Huggingface/`
-A hands-on exploration of the Hugging Face ecosystem, adapted from the official Hugging Face NLP Course.
-- **1. Transformer Models**: High-level overview of the Transformer architecture.
-- **2. Using Transformers**: Deep dives into the internals of the `pipeline`, Tokenizers, and PyTorch models.
-- **3. Fine tuning**: Step-by-step guides on processing datasets efficiently with `Dataset.map()`, dynamic padding with data collators, and building full training loops using the `Trainer` API.
+### `embedding.ipynb`
+An exploration into **text embeddings** — how to convert text into high-dimensional vector representations using embedding models. A crucial prerequisite for all Vector RAG pipelines.
+
+### `RAG.ipynb` & `RAG_pdf.ipynb` — Traditional Vector RAG
+Complete pipelines implementing **Vector-based RAG** over plain text and PDF documents.
+- **Workflow:** Load PDF → Chunk text → Generate embeddings → Store in `ChromaDB` → Retrieve semantic matches → Generate answers with local LLMs
+- **Strengths:** Broad semantic search and similarity matching
+
+### `Hybrid_Search_RAG.ipynb` — Hybrid Search RAG
+Combines traditional keyword-based (BM25) search with semantic vector search to improve retrieval accuracy and reduce failure modes of pure embedding-based retrieval.
+
+### `Graph_RAG.ipynb` — Vector-less Graph RAG
+An alternative RAG approach that abandons embeddings in favor of a **Knowledge Graph**.
+- **Workflow:** LLM extracts `(Subject, Relation, Object)` triplets → builds a directed graph with `networkx` → finds exact node matches → retrieves 1-hop subgraph
+- **Strengths:** High precision, 100% explainability, excellent multi-hop reasoning
+
+---
+
+## 🤖 Agents & Advanced RAG
+
+### `Function_Calling.ipynb`
+Foundation for Agentic workflows. Demonstrates how to give an LLM access to external Python functions (tools), enabling it to take actions rather than just generating text.
+
+### `ReAct_Agent.ipynb`
+Builds an AI Agent from scratch using the **ReAct (Reason + Act)** pattern — a `while` loop lets the LLM think, execute a tool, observe the result, and decide when to stop.
+
+### `Agentic_RAG_Tutorial.ipynb`
+Introduces Agentic RAG routing using **LangGraph** and **LlamaIndex Workflows**. The LLM acts as a router deciding whether to query a vector database or perform a web search.
+
+### `Self_RAG.ipynb` — Self-Reflective RAG
+Advanced pipeline using **LangGraph** with a built-in "Grader" step that evaluates whether retrieved documents actually answer the question and automatically rewrites the query if retrieval was poor.
+
+---
+
+## 🏋️ Fine-Tuning & Evaluation
+
+### `LoRA_PEFT_Tutorial.ipynb`
+Demonstrates **Parameter-Efficient Fine-Tuning (PEFT)** using **LoRA (Low-Rank Adaptation)** and QLoRA for memory-efficient training. Fine-tunes an LLM to adopt a "sarcastic pirate" persona using `SFTTrainer`.
+- Output artifacts: `lora_pirate_model/` and `pirate_lora_adapter/`
+
+### `RAGAS_Tutorial.ipynb`
+Evaluates RAG pipelines using the **RAGAS** framework — programmatically assesses retrieval accuracy, generation quality, and answer relevance using the Gemini API.
+
+---
+
+## 🦜🔗 LangChain — From Zero to Production (`LangChain/`)
+
+A complete hands-on course for building LLM-powered applications — **100% free**, no OpenAI required. Uses Groq, Google Gemini, Ollama, and HuggingFace.
+
+| # | Notebook | Topics |
+|---|----------|--------|
+| 00 | `00_FREE_Setup_Guide.ipynb` | Free providers, API keys, connectivity tests |
+| 00 | `00_LangChain_Overview.ipynb` | Architecture, LCEL, core abstractions |
+| 01 | `01_LLMs_and_ChatModels.ipynb` | ChatGroq, Gemini, Ollama, streaming, structured output |
+| 02 | `02_Prompt_Templates.ipynb` | PromptTemplate, few-shot, CRAFT framework |
+| 03 | `03_Output_Parsers.ipynb` | StrOutputParser, JSON, Pydantic, OutputFixingParser |
+| 04 | `04_LCEL_Chains.ipynb` | Pipe operator, parallel chains, branching, fallbacks |
+| 05 | `05_Memory_and_Conversations.ipynb` | Message history, SQLite persistence, multi-session chatbot |
+| 06 | `06_Document_Loaders.ipynb` | PDF, CSV, web, directory loaders; text splitters |
+| 07 | `07_Embeddings_and_VectorStores.ipynb` | HuggingFace embeddings, FAISS, Chroma, retrievers |
+| 08 | `08_RAG_Retrieval_Augmented_Generation.ipynb` | Full RAG pipeline, citations, conversational RAG |
+| 09 | `09_Tools_and_Agents.ipynb` | Custom tools, ReAct agent, tool-calling, agent memory |
+| 10 | `10_LangGraph.ipynb` | StateGraph, multi-agent systems, human-in-the-loop |
+| 11 | `11_LangSmith_Observability.ipynb` | Tracing, evaluation, custom evaluators, production monitoring |
+| 12 | `12_Production_Best_Practices.ipynb` | Retry, caching, async, cost optimization, security |
+
+📖 See [`LangChain/README.md`](LangChain/README.md) for full module breakdowns and the sequential learning path.
+
+---
+
+## 🤗 Hugging Face NLP Course (`Huggingface/`)
+
+Hands-on exploration of the Hugging Face ecosystem, adapted from the official HuggingFace NLP Course.
+
+| Module | Content |
+|--------|---------|
+| `1_Transformer_Models/` | `Transformers.ipynb` — High-level Transformer architecture overview and pipeline API |
+| `2_Using_Transformers/` | `Behind the pipeline (PyTorch).ipynb`, `Models (PyTorch).ipynb`, `Tokenizers.ipynb`, attention masking, batching |
+| `3_Fine_tuning/` | `Fine-tune_TrainerAPI.ipynb`, full native training loop (`section3`), learning curve analysis |
+| `4_Sharing_Models/` | `sharing_models.ipynb`, using pretrained models from the Hub |
+| `5_Dataset_Library/` | `dataset_lib.ipynb`, `data_preprocessing.ipynb`, `dataset_creation.ipynb`, `Semantic_Search_FAISS.ipynb`, bigdata preprocessing |
+| `6_Tokenizer_Library/` | `Byte-Pair_Encoding.ipynb`, `WordPiece_Tokenization.ipynb`, `Unigram_tokenization.ipynb`, `Fast_Tokenizer.ipynb`, `Fast_Tokenizer_QA.ipynb`, `training_tokenizer.ipynb` |
+
+---
+
+## 📚 Hands-On LLMs (`Hands-On-Large-Language-Models/`)
+
+Structured walkthrough of core LLM concepts with interactive notebooks:
+
+| Chapter | Topic |
+|---------|-------|
+| Chapter 1 | Introduction to Language Models |
+| Chapter 2 | Tokens and Token Embeddings |
+| Chapter 3 | Looking Inside LLMs |
+| Chapter 4 | Text Classification |
+| Chapter 5 | Text Clustering and Topic Modeling |
+
+---
+
+## 🗃️ Archived (`archived/`)
+
+Older ML/DL notebooks from earlier coursework, kept for reference:
+- `HealthData Decision Tree classifier.ipynb`
+- `Logistic_Regression_with_a_Neural_Network_mindset_v6a.ipynb`
+- `Assignment 2 FinalWork -version T2.ipynb`
 
 ---
 
 ## 🛠️ Technology Stack
-Many notebooks are built to run locally and privately.
-- **Local LLMs:** [Ollama](https://ollama.com/) running `llama3.2:3b` and `qwen2.5:7b-instruct` models.
-- **Orchestration:** `langchain`, `langgraph`, and `llama-index`
-- **Hugging Face:** `transformers`, `datasets`, `evaluate`, `peft`, `trl`
-- **Vector Database:** `chromadb`
-- **Graph Database:** `networkx` (In-memory)
-- **Embeddings:** `SentenceTransformer` (`all-MiniLM-L6-v2`)
+
+| Category | Tools |
+|----------|-------|
+| **Local LLMs** | [Ollama](https://ollama.com/) — `llama3.2:3b`, `qwen2.5:7b-instruct` |
+| **Cloud LLMs (Free)** | Groq (`llama-3.1-8b-instant`, `llama-3.3-70b-versatile`), Google Gemini Flash |
+| **Orchestration** | `langchain`, `langgraph`, `llama-index` |
+| **Hugging Face** | `transformers`, `datasets`, `evaluate`, `peft`, `trl` |
+| **Vector Database** | `chromadb`, `faiss-cpu` |
+| **Graph Database** | `networkx` (in-memory) |
+| **Embeddings** | `sentence-transformers` (`all-MiniLM-L6-v2`) |
+| **Evaluation** | `ragas` |
+
+---
 
 ## 🚀 Getting Started
 
-1. Ensure you have Python installed and create a virtual environment (`.venv`).
-2. Install the required dependencies:
-   ```bash
-   pip install langchain langchain-community langchain-ollama chromadb sentence-transformers pypdf networkx matplotlib jupyter langgraph llama-index-core llama-index-llms-ollama transformers datasets evaluate peft trl
-   ```
-3. Install [Ollama](https://ollama.com/) and download the required models:
-   ```bash
-   ollama run llama3.2:3b
-   ollama run qwen2.5:7b-instruct
-   ```
-4. Start a Jupyter server and open any of the notebooks!
+### 1. Create a virtual environment
+
+```bash
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# macOS/Linux
+source .venv/bin/activate
+```
+
+### 2. Install dependencies
+
+```bash
+# Core RAG & Agents
+pip install langchain langchain-community langchain-ollama langchain-groq langchain-google-genai
+pip install chromadb faiss-cpu sentence-transformers pypdf networkx matplotlib jupyter
+pip install langgraph llama-index-core llama-index-llms-ollama
+
+# Fine-tuning
+pip install transformers datasets evaluate peft trl
+
+# Evaluation
+pip install ragas
+
+# LangChain course extras
+pip install langchain-huggingface langchain-text-splitters python-dotenv
+```
+
+### 3. Configure API keys
+
+Create a `.env` file in the project root (`AI/.env`):
+
+```env
+# Groq — free, fast (recommended)
+GROQ_API_KEY=gsk_your_key_here
+
+# Google Gemini — free alternative
+GOOGLE_API_KEY=AIza_your_key_here
+
+# LangSmith — optional, for tracing
+LANGCHAIN_API_KEY=ls__your_key_here
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_PROJECT=ai-exploration
+```
+
+### 4. Install Ollama (for local notebooks)
+
+```bash
+# Download from https://ollama.com and then pull models:
+ollama run llama3.2:3b
+ollama run qwen2.5:7b-instruct
+```
+
+### 5. Launch Jupyter
+
+```bash
+jupyter notebook
+```
+
+---
+
+## 📋 Recommended Learning Path
+
+```
+Embeddings → RAG → Hybrid Search → Graph RAG
+                ↓
+     Function Calling → ReAct Agent
+                ↓
+     Agentic RAG → Self RAG
+                ↓
+     LoRA Fine-Tuning → RAGAS Evaluation
+                ↓
+     LangChain/ course (00 → 12)
+                ↓
+     Huggingface/ NLP course (1 → 6)
+                ↓
+     Hands-On-Large-Language-Models/ (Ch. 1 → 5)
+```
