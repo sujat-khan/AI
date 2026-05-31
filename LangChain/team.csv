@@ -1,0 +1,5 @@
+name,role,experience_years,skills
+Alice Smith,ML Engineer,5,"Python, TensorFlow, PyTorch"
+Bob Johnson,Data Scientist,3,"Python, R, SQL, Spark"
+Carol Williams,AI Researcher,8,"Deep Learning, NLP, Computer Vision"
+David Brown,Backend Engineer,4,"Go, Kubernetes, PostgreSQL"
